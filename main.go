@@ -16,15 +16,15 @@ import (
 func main() {
 	var passLength int
 	var t0, interval int64
-	var encryption, secretKey, targetApi, userid, message, passLenFormat string
+	var hashAlgorithm, secretKey, targetApi, userid, message, passLenFormat string
 
 	// TODO: Improve parameter parsing
 	// Begin parsing
-	flag.StringVar(&secretKey, "secret", "defaultPass", "The secret to encrpt hotp")
-	flag.StringVar(&encryption, "encryption", "sha512", "Type of encryption, default is sha512")
+	flag.StringVar(&secretKey, "secret", "defaultPass", "The secret used with the hmac algorithm.")
+	flag.StringVar(&hashAlgorithm, "hashAlgorithm", "sha512", "Type of hash algorithm used, default is sha512.")
 	flag.StringVar(&targetApi, "target", "", "The site to post the message using hotp.")
-	flag.StringVar(&userid, "userid", "default@gmail.com", "Your user id")
-	flag.StringVar(&message, "message", "{userid: abc, lol: \"sample message.\"}", "Message to send")
+	flag.StringVar(&userid, "userid", "default@gmail.com", "Your user id.")
+	flag.StringVar(&message, "message", "{userid: abc, lol: \"sample message.\"}", "Message to send.")
 
 	flag.Int64Var(&t0, "initial", 0, "t0")
 	flag.Int64Var(&interval, "interval", 30, "Interval between new hotp")
@@ -37,7 +37,7 @@ func main() {
 	// Format for padding with leading zeroes if password length is less than passLength
 	passLenFormat = fmt.Sprintf("%%0%dd", passLength)
 
-	password := hotp.CalcHotp(encryption, []byte(secretKey), t0, interval, passLength)
+	password := hotp.CalcHotp(hashAlgorithm, []byte(secretKey), t0, interval, passLength)
 
 	auth := base64.StdEncoding.EncodeToString([]byte(userid + ":" + fmt.Sprintf(passLenFormat, password)))
 

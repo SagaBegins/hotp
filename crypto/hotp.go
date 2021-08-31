@@ -11,11 +11,11 @@ import (
 	"time"
 )
 
-// Calculates the HMAC based one time password using the given 'encryption' for a 'secretKey', initial time 't0'
+// Calculates the HMAC based one time password using the given 'hashAlgorithm' for a 'secretKey', initial time 't0'
 // and the 'interval' between each successive password and returns a password with a length of 'passLength'.
-func CalcHotp(encryption string, secretKey []byte, t0 int64, interval int64, passLength int) (res uint64) {
+func CalcHotp(hashAlgorithm string, secretKey []byte, t0 int64, interval int64, passLength int) (res uint64) {
 	var offset int
-	var hmac_result []byte
+	var hmacResult []byte
 	var hasher hash.Hash
 
 	counter := uint64(time.Now().Unix() / interval)
@@ -23,7 +23,7 @@ func CalcHotp(encryption string, secretKey []byte, t0 int64, interval int64, pas
 	bytearr := make([]byte, 8)
 	binary.BigEndian.PutUint64(bytearr, counter)
 
-	switch encryption {
+	switch hashAlgorithm {
 	case "sha1":
 		hasher = hmac.New(sha1.New, secretKey)
 	case "sha256":
@@ -35,15 +35,15 @@ func CalcHotp(encryption string, secretKey []byte, t0 int64, interval int64, pas
 	}
 
 	hasher.Write(bytearr)
-	hmac_result = hasher.Sum(nil)
-	offset = int(hmac_result[len(hmac_result)-1] & 0xf)
+	hmacResult = hasher.Sum(nil)
+	offset = int(hmacResult[len(hmacResult)-1] & 0xf)
 
-	bin_code := []byte{byte(0x0), byte(0x0), byte(0x0), byte(0x0),
-		byte((hmac_result[offset] & 0x7f)),
-		byte((hmac_result[offset+1]) & 0xff),
-		byte((hmac_result[offset+2]) & 0xff),
-		byte((hmac_result[offset+3]) & 0xff)}
+	binCode := []byte{byte(0x0), byte(0x0), byte(0x0), byte(0x0),
+		byte((hmacResult[offset] & 0x7f)),
+		byte((hmacResult[offset+1]) & 0xff),
+		byte((hmacResult[offset+2]) & 0xff),
+		byte((hmacResult[offset+3]) & 0xff)}
 
-	res = binary.BigEndian.Uint64(bin_code)
+	res = binary.BigEndian.Uint64(binCode)
 	return res % uint64(math.Pow10(passLength))
 }
