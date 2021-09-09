@@ -18,4 +18,4 @@
 - `message`: The message body to be sent in Json format.
 - `secretKey`: Secret key used.
 - `interval`: The time interval (TX) between hotp generation.
-- `initial`: The start time (T0) used for calculation of hotp.
+- `initial`: The start time (T0) used for calculating hotp.
