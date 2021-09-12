@@ -4,7 +4,7 @@
 
     bin\main.exe [-options=value]
 
-`make run` automatically builds the main.go file and executes the binary with the mentioned parameters.
+`make run` builds the main.go file and executes the binary with the mentioned parameters.
 
 `make clean` deletes the main.exe file in the bin folder.
 
