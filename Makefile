@@ -8,7 +8,7 @@ bin/main.exe: main.go crypto/hotp.go
 :: target: Target api
 :: interval: Interval between each new hotp
 run: bin/main.exe
-	bin\main.exe -interval="10"
+	bin\main.exe -interval=10
 
 clean:
 	del bin\main.exe

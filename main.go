@@ -21,7 +21,7 @@ func main() {
 	// TODO: Improve parameter parsing
 	// Begin parsing
 	flag.StringVar(&secretKey, "secret", "defaultPass", "The secret used with the hmac algorithm.")
-	flag.StringVar(&hashAlgorithm, "hashAlgorithm", "sha512", "Type of hash algorithm used, default is sha512.")
+	flag.StringVar(&hashAlgorithm, "hash", "sha512", "Type of hash algorithm used, default is sha512.")
 	flag.StringVar(&targetApi, "target", "", "The site to post the message using hotp.")
 	flag.StringVar(&userid, "userid", "default@gmail.com", "Your user id.")
 	flag.StringVar(&message, "message", "{userid: abc, lol: \"sample message.\"}", "Message to send.")
@@ -29,7 +29,7 @@ func main() {
 	flag.Int64Var(&t0, "initial", 0, "t0")
 	flag.Int64Var(&interval, "interval", 30, "Interval between new hotp")
 
-	flag.IntVar(&passLength, "lenght", 10, "Length of the hotp.")
+	flag.IntVar(&passLength, "length", 10, "Length of the hotp.")
 
 	flag.Parse()
 	// End parsing
